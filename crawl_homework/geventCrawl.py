@@ -62,5 +62,6 @@ if __name__ == "__main__":
     t1 = time.time()
     spider = Spider()
     spider.start_work(pages)
+    print()
     t2 = time.time()
     print(t2-t1)
