@@ -7,12 +7,12 @@ class Config:
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.qq.com')
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '114180700@qq.com')
-    MAIL_PASSWORD = 'cxcinxiykzfncacd'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '你的邮箱地址')
+    MAIL_PASSWORD = '你的第三方邮箱密码'
 
     FLASKY邮件主题前缀 = '【FLASKY博客】'
-    FLASK邮件发送者 = 'FLASK管理员<114180700@qq.com>'
-    FLASKY管理员 = '114180700@qq.com'
+    FLASK邮件发送者 = 'FLASK管理员<你的邮箱地址>'
+    FLASKY管理员 = '你的邮箱地址'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
