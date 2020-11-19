@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>亲 {{ user.username }}</p> 
+    <p>欢迎来到Flasky博客!</p>
+    <p>确认帐户请点击下面的链接：</p>
+    <p>
+        {{ url_for('auth.confirm', token=token, _external=True) }}
+    </p>
+    <p>感谢支持</p>
+</body>
+</html>
