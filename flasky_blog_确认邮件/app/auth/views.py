@@ -11,7 +11,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        print(User.query.all()[0].email)
+
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
@@ -36,7 +36,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         # flash('你可以登录了！', 'success')
-        send_email(current_user.email, '确认账户', 'auth/email/confirm', user=user, token=token) 
+        token = user.generate_confirmation_token()
+        send_email(user.email, '确认账户', 'auth/email/confirm', user=user, token=token) 
         flash('确认邮件已经发送到您的邮箱', 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
