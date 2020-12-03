@@ -1,0 +1,82 @@
+
+    {% for post in posts %}
+    
+    <div class="container main-section border mt-2">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-2 col-5">
+                        <img src="{{ url_for('main.show_photo', photoname=post.author.username) }}" class="img-thumbnail" width="150px">
+                    </div>
+                    <div class="col-lg-10 col-sm-10 col-7">
+                        <span class="text-muted float-right">
+                            {{moment(post.timestamp).format('LLL')}}
+                            {{ moment(post.timestamp).fromNow() }}
+                        </span>                        
+                        <h4 class="text-primary">Post Title</h4>
+                        <p>
+                            {% if post.body_html %}
+                            {{ post.body_html | safe }}
+                            {% else %}
+                            {{ post.body }}
+                            {% endif %}
+                        </p>
+                        <button class="btn btn-sm btn-dark">Read more</button>
+                    </div>
+                </div>
+                <div class="row post-detail">
+                    <div class="col-lg-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col">
+                                <img src="{{ url_for('main.show_photo', photoname=post.author.username) }}" class="rounded-circle" width="20px">
+                                <span>by</span> <span class="text-info">
+                                    <a href="{{ url_for('.user', username=post.author.username) }}">
+                                        {{ post.author.username }}
+                                    </a>
+                                </span>
+                            </div>
+                            <!-- <li class="list-inline-item">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                <span>
+                                    {{moment(post.timestamp).format('LLL')}}
+                                    {{ moment(post.timestamp).fromNow() }}
+                                </span>
+                            </li> -->
+                            <div class="col d-flex justify-content-end">
+                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                <a href="{{ url_for('.post', id=post.id) }}">
+                                    <span class="badge badge-success mr-2">链接</span>
+                                </a>
+                                {% if current_user == post.author %}
+                                <a href="{{ url_for('.edit', id=post.id) }}">
+                                    <span class="badge badge-primary mr-2">编辑</span>
+                                </a>
+                                {% elif current_user.is_administrator() %}
+                                <a href="{{ url_for('.edit', id=post.id) }}">
+                                    <span class="badge badge--danger">编辑[管理员]</span>
+                                </a>
+                                {% endif %}
+
+                                {% if current_user == post.author %}
+                                <a href="{{ url_for('.remove_post', id=post.id) }}">
+                                    <span class="badge badge-danger mr-2">删除</span>
+                                </a>
+                                {% elif current_user.is_administrator() %}
+                                <a href="{{ url_for('.remove_post', id=post.id) }}">
+                                    <span class="badge badge-danger mr-2">删除[管理员]</span>
+                                </a>
+                                {% endif %}
+
+                                <a href="{{ url_for('.post', id=post.id) }}#comments">
+                                    <span class="badge badge-primary mr-2">
+                                        {{ post.comments.count() }} Comments
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
