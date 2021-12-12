@@ -1,0 +1,139 @@
+{% from 'bootstrap4/form.html' import render_form %}
+
+<div class="posts">
+    {% for post in posts %}
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-12">
+                <div class="d-flex flex-column comment-section">
+                    <div class="bg-white p-2">
+                        <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                src="{{ url_for('static', filename='images/girl.jpg') }}" width="80">
+                            <div class="d-flex flex-column justify-content-start ml-2">
+                                <span class="font-weight-bold title">标题：{{ post.title }}</span>
+                                <span class="d-block font-weight-bold name">
+                                    <a href="{{ url_for('.user', username=post.author.username) }}">
+                                        {{ post.author.username }}
+                                    </a>
+                                </span>
+                                <span class="date text-black-50">{{ moment(post.timestamp).fromNow() }}</span>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <p class="comment-text">
+                                {% if post.body_html %}
+                                {{ post.body_html | safe }}
+                                {% else %}
+                                {{ post.body }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <!-- <i class="fa fa-tags" aria-hidden="true"></i> -->
+                        <a href="{{ url_for('main.post', id=post.id) }}">
+                            <span class="badge badge-success mr-2">链接</span>
+                        </a>
+                        {% if current_user == post.author %}
+                        <a href="{{ url_for('main.edit', id=post.id) }}">
+                            <span class="badge badge-primary mr-2">编辑</span>
+                        </a>
+                        {% elif current_user.is_administrator() %}
+                        <a href="{{ url_for('main.edit', id=post.id) }}">
+                            <span class="badge badge--danger">编辑[管理员]</span>
+                        </a>
+                        {% endif %}
+
+                        {% if current_user == post.author %}
+                        <a href="{{ url_for('main.remove_post', id=post.id) }}">
+                            <span class="badge badge-danger mr-2">删除</span>
+                        </a>
+                        {% elif current_user.is_administrator() %}
+                        <a href="{{ url_for('main.remove_post', id=post.id) }}">
+                            <span class="badge badge-danger mr-2">删除[管理员]</span>
+                        </a>
+                        {% endif %}
+
+                        <a href="{{ url_for('main.post', id=post.id) }}#comments">
+                            <span class="badge badge-primary mr-2">
+                                {{ post.comments.count() }} Comments
+                            </span>
+                        </a>
+                    </div>
+                    <div class="bg-white">
+                        <div class="d-flex flex-row fs-12">
+                            <div class="like p-2 cursor"><i class="fas fa-thumbs-up"></i><span class="ml-1">点赞</span>
+                            </div>
+                            <div class="like p-2 cursor"><i class="far fa-comment-dots"></i><span class="ml-1">评论</span>
+                            </div>
+                            <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">分享</span></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if show_comments %}
+    <div class="bg-light p-2">
+        <form method="POST" class="form" role="form">
+            {{ form.hidden_tag() }}
+            <div class="d-flex flex-row align-items-start">
+                <img class="rounded-circle" src="{{ url_for('static', filename='images/girl.jpg') }}" width="40">
+                <!-- <textarea class="form-control ml-1 shadow-none textarea" id='body' name="body"  required></textarea> -->
+                {{ form.body(class="form-control ml-1 shadow-none textarea", id="body") }}
+            </div>
+            <div class="mt-2 text-right">
+                <!-- <button class="btn btn-primary btn-sm shadow-none" id='submit' name='submit' type="button">评论</button> -->
+                {{ form.submit(class="btn btn-primary btn-sm shadow-none",id='submit') }}
+                <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">删除评论</button>
+            </div>
+        </form>
+    </div>
+    {{ render_form(form) }}
+    {% for comment in post.comments %}
+    <div class="mt-2">
+        <p class="comment-text">
+            {% if comment.body_html %}
+            {{ comment.body_html | safe }}
+            {% else %}
+            {{ comment.body }}
+            {% endif %}
+        </p>
+        <div class="card p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="user d-flex flex-row align-items-center">
+                    <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2">
+                    <span>
+                        <small class="font-weight-bold text-primary">{{ comment.author.username }}</small>
+                        <p><small class="font-weight-bold">
+                            {% if comment.body_html %}
+                                {{ comment.body_html | safe }}
+                            {% else %}
+                                {{ comment.body }}
+                            {% endif %}
+                        </small>
+                        </p>
+                    </span>
+                </div>
+                <small>{{ moment(post.timestamp).fromNow() }}</small>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <i class="fa fa-tags" aria-hidden="true"></i>
+                {% if current_user == post.author %}
+                <a href="{{ url_for('main.remove_post', id=post.id) }}">
+                    <span class="badge badge-danger mr-2">删除</span>
+                </a>
+                {% elif current_user.is_administrator() %}
+                <a href="{{ url_for('main.remove_post', id=post.id) }}">
+                    <span class="badge badge-danger mr-2">删除[管理员]</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+</div>

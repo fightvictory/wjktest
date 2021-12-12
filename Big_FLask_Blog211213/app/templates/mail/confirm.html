@@ -1,0 +1,6 @@
+亲， {{ user.username }},
+欢迎来到Flasky博客!
+确认账户请点击以下链接:
+{{ url_for('auth.confirm', token=token, _external=True) }}
+此致, 敬礼！
+WJK Flasky 团队

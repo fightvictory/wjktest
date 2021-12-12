@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'bootstrap4/form.html' import render_form %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block title %}Python博客 - 编辑个人资料{% endblock %} 
+ 
+{% block page_content %} 
+<div class="page-header"> 
+    {{ render_form(form) }}
+</div> 
+{% endblock %}

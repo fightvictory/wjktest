@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% from 'bootstrap4/form.html' import render_form %}
+{% from 'bootstrap4/pagination.html' import render_pager, render_pagination %}
+
+{% block title %}欢迎来到博客{% endblock %}
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fontawesome/css/all.css') }}">
+
+{% endblock %}
+
+{% block page_content %}
+
+<div>
+    {% if current_user.can(Permission.WRITE) %}
+    {{ render_form(form) }}
+    {% endif %}
+</div>
+
+<div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a {% if not show_followed %} class="nav-link active" {% else %} class="nav-link" {% endif %}
+                href="{{ url_for('main.show_all') }}">所有文章</a>
+        </li>
+        <li class="nav-item">
+            <a {% if not show_followed %} class="nav-link" {% else %} class="nav-link active" {% endif %}
+                href="{{ url_for('main.show_followed') }}">关注者的文章</a>
+        </li>
+    </ul>
+    {% include '_posts.html' %}
+</div>
+    
+    {{ render_pagination(pagination) }}
+
+    <p>本地的日期和时间是 {{ moment(current_time).format('LLLL') }}</p>
+    <p>{{ moment(current_time).fromNow(refresh=True) }}</p>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
+
+
+

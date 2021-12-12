@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% from 'bootstrap4/form.html' import render_form %}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+
+{% endblock %}
+
+{% block title %}Python博客 - 登录{% endblock %} 
+ 
+{% block page_content %} 
+<div class="page-header"> 
+    <h1>Login</h1> 
+</div> 
+<div class="col-md-4"> 
+    {{ render_form(form) }} 
+    <p>
+      新用户?
+      <a href="{{ url_for('auth.register') }}">
+          点击这点进行注册！！
+      </a>
+</p>
+</div> 
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+            <form method="POST">
+              {{ form.hidden_tag() }}
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" name='email' id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email地址</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" name='password' id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">密码</label>
+              </div>
+
+              <div class="form-check mb-3">
+                <input class="form-check-input" name='remember_me' type="checkbox" value="" id="rememberPasswordCheck">
+                <label class="form-check-label" for="rememberPasswordCheck">
+                  记住我
+                </label>
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-primary btn-login text-uppercase fw-bold" name='submit' type="submit">登录</button>
+              </div>
+              <hr class="my-4">
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
