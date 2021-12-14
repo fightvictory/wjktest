@@ -64,8 +64,8 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-    def __repr__(self):
-        return '<Role %r>' % self.name
+    # def __repr__(self):
+    #     return '<Role %r>' % self.name
 
 class Follow(db.Model):
     __tablename__ = 'follows'
